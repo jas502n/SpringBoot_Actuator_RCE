@@ -107,6 +107,10 @@ US:null
 
 ```
 
+Ps: 如果您很幸运在目标类路径中具有Eureka-Client <1.8.7（通常包含在Spring Cloud Netflix中），则可以利用其中的XStream反序列化漏洞。
+
+例如: `User-Agent: Java-EurekaClient/v1.4.11`
+
 
 # SpringBoot_Actuator_RCE 漏洞复现 (二)
 
