@@ -176,3 +176,8 @@ root@kali:/var/www/html# ls /tmp/j*
 root@kali:/var/www/html#
 ```
 
+
+## 参考链接
+
+https://www.veracode.com/blog/research/exploiting-spring-boot-actuators
+
