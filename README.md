@@ -310,6 +310,8 @@ root@kali:/var/www/html#
 
 ## 0x00 yaml_payload.jar 制造
 
+代码 `https://github.com/artsploit/yaml-payload`
+
 ![](./jar.png)
 
 AwesomeScriptEngineFactory.java 部分代码
@@ -329,8 +331,17 @@ public class AwesomeScriptEngineFactory implements ScriptEngineFactory {
         }
     }
 ```
+  `ymal_payload.jar\artsploit\AwesomeScriptEngineFactory.java `
 
-该文件的反序列化将触发提供的URLClassLoader的ScriptEngineManager的构造函数的执行。
+包含实际的字节码，并在构造函数中带有恶意有效载荷。
+
+  `ymal_payload.jar\services\javax.script.ScriptEngineFactory`
+
+只是一个包含对'artsploit.AwesomeScriptEngineFactory'的完整引用的文本文件，
+以便ServiceLoader知道在哪里可以找到该类
+
+内容：`artsploit.AwesomeScriptEngineFactory`
+
 
 http://10.20.24.191:8090/ymal_payload.jar
 
@@ -374,7 +385,7 @@ Content-Length: 5
 
 12312
 ```
-## 0x03 jar 文件执行成功
+## 0x03 RCE 执行成功
 
 ![](./yaml_success.png)
 ```
