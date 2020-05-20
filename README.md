@@ -112,7 +112,7 @@ Ps: 如果您很幸运在目标类路径中具有Eureka-Client <1.8.7（通常�
 例如: `User-Agent: Java-EurekaClient/v1.4.11`
 
 
-# SpringBoot_Actuator_RCE 漏洞复现 (二)
+# SpringBoot_Actuator_RCE（xstream反序列化）漏洞复现 (二)
 
 
 ## 0x01 环境搭建
