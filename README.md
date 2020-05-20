@@ -291,12 +291,14 @@ root@kali:/var/www/html#
 ```
 # yml RCE 漏洞复现 (三)
 
-通过Spring环境`spring.cloud.bootstrap.location` 属性修改来实现RCE的更可靠方法
+通过Spring环境`spring.cloud.bootstrap.location` 属性修改来实现RCE的方法更可靠
 
 该属性用于加载外部配置并以YAML格式解析它。
-为了实现这一点，我们还需要调用 `/refresh` 端点。
+为了实现这一点，任需要POST `/refresh` 任意内容触发漏洞。
 
-yaml-payload.yml 文件内容
+## yaml_payload.yml 文件内容
+
+![](./yml_http.png)
 
 ```
 !!javax.script.ScriptEngineManager [
