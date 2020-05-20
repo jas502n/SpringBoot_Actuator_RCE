@@ -112,7 +112,7 @@ Ps: 如果您很幸运在目标类路径中具有Eureka-Client <1.8.7（通常�
 例如: `User-Agent: Java-EurekaClient/v1.4.11`
 
 
-# SpringBoot_Actuator_RCE（xstream反序列化）漏洞复现 (二)
+# SpringBoot_Actuator JNDI RCE 漏洞复现 (二)
 
 
 ## 0x01 环境搭建
@@ -289,7 +289,7 @@ root@kali:/var/www/html# ls /tmp/j*
 /tmp/jas502n
 root@kali:/var/www/html#
 ```
-# yml RCE 漏洞复现 (三)
+# YML RCE 漏洞复现 (三)
 
 通过Spring环境`spring.cloud.bootstrap.location` 属性修改来实现RCE的方法更可靠
 
@@ -395,6 +395,8 @@ root@kali:/var/www/html# ls /tmp/succ*
 root@kali:/var/www/html# 
 
 ```
+
+
 
 Ps: 与Eureka的XStream有效负载相比，yaml的方法甚至可以在最新版本中使用。
 
