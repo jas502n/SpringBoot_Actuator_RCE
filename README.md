@@ -108,6 +108,13 @@ root@kali:/tmp# echo VVM6bnVsbA== |base64 -d
 US:null
 
 ```
+## 脚本化
+
+输入要查询的参数,输入 nc 监听的端口
+![](./send_env.png)
+
+监听端口,获取指定 header 头,自动 base64 解密
+![](./password.png)
 
 Ps: 如果您很幸运在目标类路径中具有Eureka-Client <1.8.7（通常包含在Spring Cloud Netflix中），则可以利用其中的XStream反序列化漏洞。
 
