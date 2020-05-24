@@ -2,7 +2,9 @@
 
 当我们直接访问 springboot 站点时,可以看到某些 password 字段填充了*
 
-通过${name} 可以获取明文字段
+1. 通过${name} 可以获取明文字段
+2. 配置不当导致敏感信息泄露(password 打星号,而 pwd 没有打星号)
+![](./pwd.png)
 
 参考 `https://mp.weixin.qq.com/s/HmGEYRcf1hSVw9Uu9XHGsA`
 
