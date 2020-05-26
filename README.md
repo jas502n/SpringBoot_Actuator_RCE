@@ -1,5 +1,6 @@
 ## swagger-ui 接口
 
+![](./thinkjava.md)
 `/swagger-ui.html`
 
 # SpringBoot env 获取* 敏感信息 (一)
