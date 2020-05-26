@@ -1,3 +1,7 @@
+## swagger-ui 接口
+
+`/swagger-ui.html`
+
 # SpringBoot env 获取* 敏感信息 (一)
 
 当我们直接访问 springboot 站点时,可以看到某些 password 字段填充了*
